@@ -16,9 +16,20 @@ namespace PROJECT.DataLayer
             // Empty handler
         }
 
+       public List<string> makeEmpty()
+        {
+            myList = File.ReadAllLines("StudentDetails.txt")
+                         .Where(line => !string.IsNullOrWhiteSpace(line))
+                         .ToList();
+                         
+            ReWriteAll(myList);
+            return myList;
+        }
+
+
         public List<string> read()
         {
-            myList = File.ReadAllLines("StudentDetails.txt").ToList();
+            myList = makeEmpty();
             return myList;
         }
 
