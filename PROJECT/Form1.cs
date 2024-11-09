@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using PROJECT.DataLayer;
 using PROJECT.StudentAdmin;
+using System.IO;
+
 
 namespace PROJECT
 {
@@ -170,17 +173,108 @@ namespace PROJECT
         private void btnUpdate_Click(object sender, EventArgs e)
         {
             DataHandler handler = new DataHandler();
-            if (lastClickedRow >= 0 && lastClickedColumn >= 0)
+
+
+            string[] lines = File.ReadAllLines("StudentDetails.txt");
+
+            string idToUpdate = txtShow.Text;
+
+            for (int i = 0; i < lines.Length; i++)
             {
-                List<string> myList = handler.read();
-                string[] arr = myList[lastClickedRow].Split(',');
-                arr[lastClickedColumn] = txtShow.Text;
-                myList[lastClickedRow] = string.Join(",", arr);
-                handler.ReWriteAll(myList);
-                StudentPortal portal = new StudentPortal(0, "", 0, "");
-                dgvUpdate.DataSource = portal.DisplayAll();
+                if (lines[i].StartsWith(idToUpdate))
+                {
+                    MessageBox.Show("Take note that when updating info if you would like to keep it the same re write it as it was do not leave it empty");
+
+                    string Name = Microsoft.VisualBasic.Interaction.InputBox("Please enter updated name:", "Updating student info");
+                    string Age = Microsoft.VisualBasic.Interaction.InputBox("Please enter updated age:", "Updating student info");
+                    string Course = Microsoft.VisualBasic.Interaction.InputBox("Please enter updated course:", "Updating student info");
+
+                    lines[i] = $"{idToUpdate},{Name},{Age},{Course}";
+                    File.WriteAllLines("StudentDetails.txt", lines);
+                    MessageBox.Show("Your information has been updated succesfully !");
+                    return; 
+                }
             }
+
+            MessageBox.Show("ID not found.");
+
         }
 
+
+
+        private void TxtCountStudent_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnCountStudent_Click(object sender, EventArgs e)
+        {
+            int lineCount = File.ReadAllLines("StudentDetails.txt").Length - 1;
+            TxtCountStudent.Text = lineCount.ToString();
+
+            
+
+        }
+
+        private void BtnAvgAge_Click(object sender, EventArgs e)
+        {
+            string[] lines = File.ReadAllLines("StudentDetails.txt");
+
+            int totalAge = 0;
+            int studentCount = 0;
+
+            foreach (string line in lines)
+            {
+                string[] parts = line.Split(',');
+                if (parts.Length >= 3 && int.TryParse(parts[2], out int age))
+                {
+                    totalAge += age;
+                    studentCount++;
+                }
+                else
+                {
+                    // Handle invalid age values, e.g., log an error or skip the line
+                    Console.WriteLine("Invalid age value in line: " + line);
+                }
+            }
+
+            int averageAge = (int)totalAge / studentCount;
+            TxtAvgAge.Text = averageAge.ToString();
+            
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void BtnReport_Click(object sender, EventArgs e)
+        {
+            string path = "summary.txt";
+
+            //eshabilshing a coonection to the file 
+
+            FileStream mystream = new FileStream(path, FileMode.Create);//filemode.create is to create or overwrite yet append can update the text file
+
+            StreamWriter sw = new StreamWriter(mystream); //normal stream writter converting string to bytes 
+
+
+            sw.WriteLine("Welcome to the summary report");
+            sw.WriteLine("==============================");
+
+            sw.WriteLine("Total number of students are:");
+            sw.WriteLine($"{TxtCountStudent}");
+
+            sw.WriteLine("");
+
+            sw.WriteLine("Average age of students is:");
+            sw.WriteLine($"{TxtAvgAge}");
+
+            sw.Close();
+            mystream.Close();         
+            
+            MessageBox.Show("a report have succesfullt been created named summary");
+
+        }
     }
 }

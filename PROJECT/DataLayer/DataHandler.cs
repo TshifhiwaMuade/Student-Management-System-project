@@ -33,6 +33,14 @@ namespace PROJECT.DataLayer
             return myList;
         }
 
+        public void CountStudents()
+        {
+            int lineCount = File.ReadAllLines("StudentDetails.txt").Length - 1;
+           // return lineCount.ToString();
+          // TxtCountStudent.Text = lineCount.ToString();
+          
+        }
+
         public void AddToFile(string OneLine)
         {
             File.AppendAllText("StudentDetails.txt", Environment.NewLine + OneLine);
