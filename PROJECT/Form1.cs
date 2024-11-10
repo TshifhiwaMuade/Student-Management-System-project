@@ -250,31 +250,26 @@ namespace PROJECT
 
         private void BtnReport_Click(object sender, EventArgs e)
         {
-            string path = "summary.txt";
+        string path = "summary.txt";
 
-            //eshabilshing a coonection to the file 
+        FileStream mystream = new FileStream(path, FileMode.Create); 
+        StreamWriter sw = new StreamWriter(mystream); 
 
-            FileStream mystream = new FileStream(path, FileMode.Create);//filemode.create is to create or overwrite yet append can update the text file
+        sw.WriteLine("Welcome to the summary report");
+        sw.WriteLine("==============================");
 
-            StreamWriter sw = new StreamWriter(mystream); //normal stream writter converting string to bytes 
+        sw.WriteLine("Total number of students are:");
+        sw.WriteLine($"{TxtCountStudent.Text}"); 
 
+        sw.WriteLine("");
 
-            sw.WriteLine("Welcome to the summary report");
-            sw.WriteLine("==============================");
+        sw.WriteLine("Average age of students is:");
+        sw.WriteLine($"{TxtAvgAge.Text}");
 
-            sw.WriteLine("Total number of students are:");
-            sw.WriteLine($"{TxtCountStudent}");
+        sw.Close();
+        mystream.Close();
 
-            sw.WriteLine("");
-
-            sw.WriteLine("Average age of students is:");
-            sw.WriteLine($"{TxtAvgAge}");
-
-            sw.Close();
-            mystream.Close();         
-            
-            MessageBox.Show("a report have succesfullt been created named summary");
-
-        }
-    }
+        MessageBox.Show("A report has successfully been created named 'summary'");
+        }   
+     }
 }

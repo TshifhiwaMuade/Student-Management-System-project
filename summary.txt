@@ -1,0 +1,7 @@
+Welcome to the summary report
+==============================
+Total number of students are:
+30
+
+Average age of students is:
+22
