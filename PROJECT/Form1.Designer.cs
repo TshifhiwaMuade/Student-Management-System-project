@@ -1,4 +1,4 @@
-﻿namespace PROJECT
+namespace PROJECT
 {
     partial class Form1
     {
@@ -36,9 +36,9 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.grpWelccome = new System.Windows.Forms.GroupBox();
             this.grpNewUser = new System.Windows.Forms.GroupBox();
+            this.cmbCourse = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtCourse = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtAge = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -59,6 +59,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.dgvStudents = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
             this.TxtAvgAge = new System.Windows.Forms.TextBox();
             this.BtnReport = new System.Windows.Forms.Button();
             this.BtnAvgAge = new System.Windows.Forms.Button();
@@ -73,7 +74,6 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.lblRefresh = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
             this.tbcAdd.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.grpWelccome.SuspendLayout();
@@ -158,9 +158,9 @@
             // 
             // grpNewUser
             // 
+            this.grpNewUser.Controls.Add(this.cmbCourse);
             this.grpNewUser.Controls.Add(this.button1);
             this.grpNewUser.Controls.Add(this.label5);
-            this.grpNewUser.Controls.Add(this.txtCourse);
             this.grpNewUser.Controls.Add(this.label4);
             this.grpNewUser.Controls.Add(this.txtAge);
             this.grpNewUser.Controls.Add(this.label3);
@@ -173,6 +173,15 @@
             this.grpNewUser.Size = new System.Drawing.Size(502, 449);
             this.grpNewUser.TabIndex = 9;
             this.grpNewUser.TabStop = false;
+            // 
+            // cmbCourse
+            // 
+            this.cmbCourse.FormattingEnabled = true;
+            this.cmbCourse.Location = new System.Drawing.Point(211, 252);
+            this.cmbCourse.Name = "cmbCourse";
+            this.cmbCourse.Size = new System.Drawing.Size(249, 35);
+            this.cmbCourse.TabIndex = 20;
+            this.cmbCourse.SelectedIndexChanged += new System.EventHandler(this.cmbCourse_SelectedIndexChanged);
             // 
             // button1
             // 
@@ -195,13 +204,6 @@
             this.label5.Size = new System.Drawing.Size(75, 20);
             this.label5.TabIndex = 18;
             this.label5.Text = "Course:";
-            // 
-            // txtCourse
-            // 
-            this.txtCourse.Location = new System.Drawing.Point(211, 252);
-            this.txtCourse.Name = "txtCourse";
-            this.txtCourse.Size = new System.Drawing.Size(249, 33);
-            this.txtCourse.TabIndex = 17;
             // 
             // label4
             // 
@@ -419,6 +421,19 @@
             this.tabPage3.Text = "Update";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // button6
+            // 
+            this.button6.BackColor = System.Drawing.Color.Red;
+            this.button6.Location = new System.Drawing.Point(1177, 323);
+            this.button6.Name = "button6";
+            this.button6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.button6.Size = new System.Drawing.Size(85, 41);
+            this.button6.TabIndex = 7;
+            this.button6.Text = "Exit";
+            this.button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button6.UseVisualStyleBackColor = false;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
             // TxtAvgAge
             // 
             this.TxtAvgAge.Location = new System.Drawing.Point(890, 112);
@@ -547,25 +562,12 @@
             // lblRefresh
             // 
             this.lblRefresh.AutoSize = true;
-            this.lblRefresh.Location = new System.Drawing.Point(19, 55);
+            this.lblRefresh.Location = new System.Drawing.Point(6, 44);
             this.lblRefresh.Name = "lblRefresh";
             this.lblRefresh.Size = new System.Drawing.Size(274, 25);
             this.lblRefresh.TabIndex = 0;
             this.lblRefresh.Text = "Refresh or load you database";
             this.lblRefresh.Click += new System.EventHandler(this.lblRefresh_Click);
-            // 
-            // button6
-            // 
-            this.button6.BackColor = System.Drawing.Color.Red;
-            this.button6.Location = new System.Drawing.Point(1177, 323);
-            this.button6.Name = "button6";
-            this.button6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.button6.Size = new System.Drawing.Size(85, 41);
-            this.button6.TabIndex = 7;
-            this.button6.Text = "Exit";
-            this.button6.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.button6.UseVisualStyleBackColor = false;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // Form1
             // 
@@ -621,7 +623,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox grpNewUser;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtCourse;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtAge;
         private System.Windows.Forms.Label label3;
@@ -655,6 +656,7 @@
         private System.Windows.Forms.Button BtnReport;
         private System.Windows.Forms.Button BtnAvgAge;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.ComboBox cmbCourse;
     }
 }
 
