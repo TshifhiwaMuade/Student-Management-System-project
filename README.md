@@ -3,6 +3,21 @@
 **Authors:**
 Tshifhiwa Muade , Jason Bond , Glory Binkataba , Oarabile Mbewe , Glacious Mukhewvho
 
+**Take Note :**
+
+**Add the Assembly Reference:**
+
+ - In Visual Studio, right-click on your project in the Solution Explorer and select Add > Reference....
+ - In the Reference Manager window, expand Assemblies, and then select Framework.
+ - Scroll down to find Microsoft.VisualBasic. Check it, and click OK.
+
+   - Install the Microsoft.VisualBasic NuGet Package:
+   - If you don’t see Microsoft.VisualBasic is in the Reference Manager, but you may need to add it via NuGet.
+   - Right-click on your project in Solution Explorer and select Manage NuGet Packages….
+
+Go to the Browse tab, and search for Microsoft.VisualBasic, and install it.
+Once you’ve added the reference, the error should be resolved, and you should be able to use Microsoft.VisualBasic.Interaction.InputBox without any issues.
+
 Overview
 A comprehensive Windows Forms application for managing student records with full Git version control integration. This system allows educational institutions to maintain student records.
 
