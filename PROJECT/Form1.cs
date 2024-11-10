@@ -1,6 +1,5 @@
-﻿
+
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,7 +13,6 @@ using PROJECT.DataLayer;
 using PROJECT.StudentAdmin;
 using System.IO;
 
-
 namespace PROJECT
 {
     public partial class Form1 : Form
@@ -23,20 +21,26 @@ namespace PROJECT
         public void run()
         {
             string name = txtName.Text;
-            string course = txtCourse.Text;
+            string course = cmbCourse.Text;
             int age = int.Parse(txtAge.Text);
             int id = int.Parse(txtID.Text);
 
-            portal = new StudentPortal(id, name, age, course);
+            portal = new StudentPortal(name, age, course);
         }
+
         public Form1()
         {
             InitializeComponent();
-            portal = new StudentPortal(0,"NoName",0,"No_Course");
+            DataHandler handler = new DataHandler();
+            List<string> list = handler.read();
+            portal = new StudentPortal("NoName", 0, "No_Course");
+            txtID.Text = (int.Parse(list[list.Count - 1].Split(',')[0]) + 1).ToString();
+            txtID.Enabled = false;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            PopulateCourseComboBox();
 
         }
 
@@ -46,21 +50,21 @@ namespace PROJECT
             {
                 dgvStudents.DataSource = portal.DisplayAll();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show("There was an error");
             }
-            
+
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
 
         }
 
@@ -84,45 +88,61 @@ namespace PROJECT
 
         private void button4_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void dgvStudents_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Ensure there's a selected row
             if (dgvStudents.CurrentRow != null)
             {
-                // Get the index of the selected row
                 int rowIndex = dgvStudents.CurrentRow.Index;
-
-                // Retrieve values from the selected row's cells
                 txtID.Text = dgvStudents.Rows[rowIndex].Cells[0].Value.ToString();
                 txtName.Text = dgvStudents.Rows[rowIndex].Cells[1].Value.ToString();
                 txtAge.Text = dgvStudents.Rows[rowIndex].Cells[2].Value.ToString();
-                txtCourse.Text = dgvStudents.Rows[rowIndex].Cells[3].Value.ToString();
+                cmbCourse.Text = dgvStudents.Rows[rowIndex].Cells[3].Value.ToString();
             }
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             string name = txtName.Text;
-            string course = txtCourse.Text;
-            int age = int.Parse(txtAge.Text);
-            int id = int.Parse(txtID.Text);
+            string course = cmbCourse.Text;
+            string ageText = txtAge.Text;
+            txtID.Enabled = false;
 
-            portal = new StudentPortal(id, name, age, course);
+
+            if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(course) || string.IsNullOrWhiteSpace(ageText))
+            {
+                MessageBox.Show("Please fill in all the fields.");
+                return;
+            }
 
             try
             {
+                int age = int.Parse(ageText);
+
+
+                portal = new StudentPortal(name, age, course);
                 portal.AddNewUser();
-                MessageBox.Show($"{txtName.Text} was added succesfully.");
+
+                MessageBox.Show($"{txtName.Text} was added successfully.");
+
                 dgvStudents.DataSource = portal.DisplayAll();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Oops. The was a problem");
+                MessageBox.Show("Oops. There was a problem: " + ex.Message);
             }
+
+            txtName.Clear();
+            txtAge.Clear();
+            DataHandler handler = new DataHandler();
+            List<string> list = handler.read();
+            txtID.Text = (int.Parse(list[list.Count - 1].Split(',')[0]) + 1).ToString();
+            txtName.Focus();
+            cmbCourse.Text = "";
         }
+
 
         private void lblRefresh_Click(object sender, EventArgs e)
         {
@@ -131,7 +151,7 @@ namespace PROJECT
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            dgvUpdate.DataSource = portal.DisplayAll(); 
+            dgvUpdate.DataSource = portal.DisplayAll();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -151,7 +171,6 @@ namespace PROJECT
                 MessageBox.Show("Please select a row first.");
             }
         }
-
         private void button2_Click_1(object sender, EventArgs e)
         {
             dgvStudents.DataSource = portal.DisplayAll();
@@ -250,26 +269,51 @@ namespace PROJECT
 
         private void BtnReport_Click(object sender, EventArgs e)
         {
-        string path = "summary.txt";
+            string path = "summary.txt";
 
-        FileStream mystream = new FileStream(path, FileMode.Create); 
-        StreamWriter sw = new StreamWriter(mystream); 
+            FileStream mystream = new FileStream(path, FileMode.Create); 
+            StreamWriter sw = new StreamWriter(mystream); 
 
-        sw.WriteLine("Welcome to the summary report");
-        sw.WriteLine("==============================");
+            sw.WriteLine("Welcome to the summary report");
+            sw.WriteLine("==============================");
 
-        sw.WriteLine("Total number of students are:");
-        sw.WriteLine($"{TxtCountStudent.Text}"); 
+            sw.WriteLine("Total number of students are:");
+            sw.WriteLine($"{TxtCountStudent.Text}"); 
 
-        sw.WriteLine("");
+            sw.WriteLine("");
 
-        sw.WriteLine("Average age of students is:");
-        sw.WriteLine($"{TxtAvgAge.Text}");
+            sw.WriteLine("Average age of students is:");
+            sw.WriteLine($"{TxtAvgAge.Text}");
 
-        sw.Close();
-        mystream.Close();
+            sw.Close();
+            mystream.Close();
 
-        MessageBox.Show("A report has successfully been created named 'summary'");
-        }   
-     }
+            MessageBox.Show("A report has successfully been created named 'summary'");
+        }
+
+        private void cmbCourse_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        private void PopulateCourseComboBox()
+        {
+            DataHandler handler = new DataHandler();
+
+            try
+            {
+                // Get the list of unique courses from the DataHandler
+                List<string> courses = handler.GetUniqueCourses();
+
+                // Populate the ComboBox with these courses
+                cmbCourse.Items.Clear();
+                cmbCourse.Items.AddRange(courses.ToArray());
+            }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+       
+    }
 }
