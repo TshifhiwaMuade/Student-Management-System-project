@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -12,21 +12,22 @@ namespace PROJECT.StudentAdmin
 {
     class StudentPortal
     {
-        //Student ID,Name,Age,Course
+        DataHandler handler = new DataHandler();
         private int Id { get; set; }
         private string Name { get; set; }
         private int Age { get; set; }
         private string course { get; set; }
-        public StudentPortal(int ID, string name, int age, string course)
+
+        private bool justDeleted = false;
+        public StudentPortal(string name, int age, string course)
         {
-            this.Id = ID;
+            List<string> list = handler.read();
+            this.Id = int.Parse(list[list.Count - 1].Split(',')[0]) + 1;
             this.Name = name;
             this.Age = age;
             this.course = course;
         }
 
-        // Using DataHandler below
-        DataHandler handler = new DataHandler();
 
         public string[] Search()
         {
@@ -46,7 +47,9 @@ namespace PROJECT.StudentAdmin
         {
             string add = $"{this.Id},{this.Name},{this.Age},{this.course}";
 
-            handler.AddToFile(add);
+            handler.AddToFile(add, justDeleted);
+
+            justDeleted = false;
         }
 
         public void Update(string[] newArr)
@@ -99,7 +102,9 @@ namespace PROJECT.StudentAdmin
                     break;
                 }
             }
+            justDeleted = true;
             handler.ReWriteAll(myList);
         }
+
     }
 }
